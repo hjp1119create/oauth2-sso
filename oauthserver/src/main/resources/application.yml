@@ -1,11 +1,16 @@
-security:
-  oauth2:
-    client:
-      client-id: acme
-      client-secret: acmesecret
-      scope: read,write
-      auto-approve-scopes: '.*'
+#security:
+#  oauth2:
+#    client:
+#      client-id: acme
+#      client-secret: acmesecret
+#      scope: read,write
+#      auto-approve-scopes: '.*'
 
 logging:
   level:
     org.springframework.security: DEBUG
+server:
+  servlet:
+    session:
+      cookie:
+        name: OATHSESSION

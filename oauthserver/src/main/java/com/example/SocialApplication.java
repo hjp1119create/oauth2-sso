@@ -17,56 +17,18 @@ package com.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootApplication
 @RestController
-// 认证服务器
-@EnableAuthorizationServer
+@Scope(value = WebApplicationContext.SCOPE_SESSION)
 public class SocialApplication {
-
-	@RequestMapping({ "/user", "/me" })
-	public Map<String, String> user(Principal principal) {
-		Map<String, String> map = new LinkedHashMap<>();
-		map.put("name", principal.getName());
-		return map;
-	}
-
 	@RequestMapping("/hello")
 	public String Hello() {
 		return "hello word!";
-	}
-
-//	@Override
-//	protected void configure(HttpSecurity http) throws Exception {
-//		// @formatter:off
-//		http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/webjars/**").permitAll().anyRequest()
-//				.authenticated().and().exceptionHandling()
-//				// 没授权的用户将会跳转到此页面
-//				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"));
-//				// 增加过滤链，处理要认证的链接
-//		// @formatter:on
-//	}
-
-	@Configuration
-	@EnableResourceServer
-	protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-		@Override
-		public void configure(HttpSecurity http) throws Exception {
-			// @formatter:off
-			http.antMatcher("/user").authorizeRequests().anyRequest().authenticated();
-			// @formatter:on
-		}
 	}
 
 	public static void main(String[] args) {

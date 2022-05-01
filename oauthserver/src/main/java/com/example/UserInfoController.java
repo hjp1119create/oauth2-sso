@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
-public class Controller {
+public class UserInfoController {
 
     @RequestMapping({ "/user", "/me" })
     public Map<String, String> user(Principal principal) {
