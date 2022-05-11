@@ -1,34 +1,36 @@
-package com.example;
+package com.example.config;
 
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@Configuration
+
+/**
+ * @author ChengJianSheng
+ * @date 2019-03-03
+ */
 @EnableOAuth2Sso
-@EnableWebSecurity
+@Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //静态资源步骤过滤器
+        web.ignoring().antMatchers("/bootstrap/**");
+//        web.ignoring().antMatchers("/loginPage.html");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login**", "/oauth2/authorization/**")
-                .permitAll()
+                .antMatchers("/login**").permitAll()
                 .anyRequest().authenticated()
-                .and().oauth2Login();
+                .and()
+                .formLogin().loginPage("/loginPage.html").loginProcessingUrl("/authentication/form").permitAll()
+                .and().logout().logoutSuccessUrl("http://localhost:9993/logout");
     }
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        //静态资源
-        web.ignoring().antMatchers("/favicon.ico", "/resources/**", "/static/**");
-        web.ignoring().antMatchers("/login**");
-        //web防火墙
-        web.httpFirewall(null);
-    }
-
-
 }
+

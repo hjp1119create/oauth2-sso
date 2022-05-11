@@ -39,7 +39,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient("acme").secret("acmesecret").scopes("read", "write", "all").autoApprove(".*")
-                .authorizedGrantTypes("authorization_code", "implicit", "password")
+                .authorizedGrantTypes("authorization_code", "implicit", "password", "client_credentials")
 //               sso需要配置
                 .redirectUris("http://localhost:9999/login", "http://www.baidu.com");
     }

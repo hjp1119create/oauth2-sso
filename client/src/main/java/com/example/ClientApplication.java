@@ -16,11 +16,11 @@
 package com.example;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
@@ -33,27 +33,25 @@ import java.security.Principal;
  * steal your cookie.
  * 
  * @author Dave Syer
- *
  */
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
 @Configuration
 @EnableOAuth2Sso
 @RestController
 @Scope(value = WebApplicationContext.SCOPE_SESSION)
 public class ClientApplication {
-
-	@RequestMapping("/client")
-	public String home(Principal user) {
-		return "Hello " + user.getName();
-	}
-
 /*	@RequestMapping("/login")
 	public String login() {
 		return "login ";
 	}*/
 
-	public static void main(String[] args) {
-		new SpringApplicationBuilder(ClientApplication.class).run(args);
-	}
+    @RequestMapping("/client")
+    public String home(Principal user) {
+        return "[client1]Hello " + user.getName();
+    }
+
+    public static void main(String[] args) {
+        new SpringApplicationBuilder(ClientApplication.class).run(args);
+    }
 
 }
